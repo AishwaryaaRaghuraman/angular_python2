@@ -34,8 +34,10 @@ steps:
 - script: |
     echo Starting the build
     cd frontend/
+    npm install -g @angular/cli
+    npm install
+    ng version
     ng build  
-    ng version   
   displayName: 'Build with Angular'
   workingDirectory: '$(Build.SourcesDirectory)'
 
