@@ -33,7 +33,9 @@ steps:
 
 - script: |
     echo Starting the build
-    cd angular_python2/frontend
+    echo $(Build.SourcesDirectory)
+    cd $(Build.SourcesDirectory)/frontend
+   
     npm install -g @angular/cli
     npm install
     echo am here
