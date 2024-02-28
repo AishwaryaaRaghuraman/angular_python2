@@ -33,7 +33,8 @@ steps:
 
 - script: |
     echo Starting the build
-    cd frontend/
+    cd frontend
+    ls
     npm install -g @angular/cli
     npm install
     ng version
