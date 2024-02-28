@@ -39,7 +39,7 @@ steps:
     ng version
     ng build     
   displayName: 'Build with Angular'
-
+  workingDirectory: 'frontend'
       
 - script: |
     echo Starting the build
@@ -50,7 +50,8 @@ steps:
     pip install -r requirements.txt
     python app.py
   displayName: 'Build with Python'
-
+  workingDirectory: 'backend'
+  
 - script: |
     echo "Running SonarQube Scan"
     sonar-scanner.bat -D"sonar.projectKey=$(projectkey)" -D"sonar.sources=." -D"sonar.host.url=$(SONAR_URL)" -D"sonar.token=$(SONAR_TOKEN)" 
