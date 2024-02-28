@@ -32,16 +32,29 @@ steps:
   displayName: 'Install Node.js 18.x'
 
 - script: |
-    echo Starting the build
+    echo Installing for build
     cd frontend/
     npm install -g @angular/cli
     npm install
     ng version
     ng build  
-  displayName: 'Build with Angular'
-  workingDirectory: '$(Build.SourcesDirectory)'
+  displayName: 'npm install and build'
 
-      
+- script: |
+    echo Starting the build
+    cd frontend/
+    ng build  
+  displayName: 'Build with Angular'
+
+- script: |
+    echo Install 
+    cd backend/
+ 
+    python -m venv venv
+    .\venv\Scripts\activate 
+    pip install -r requirements.txt
+  displayName: 'installing '
+
 - script: |
     echo Starting the build
     cd backend/
