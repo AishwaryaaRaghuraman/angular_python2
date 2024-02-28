@@ -56,8 +56,6 @@ steps:
     displayName: 'Run SonarQube Scanning'
 
 
-
-
 - task: ArchiveFiles@2
   displayName: 'Archive files'
   inputs:
