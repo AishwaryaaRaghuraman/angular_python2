@@ -36,8 +36,6 @@ steps:
     echo $(Build.SourcesDirectory)
     cd $(Build.SourcesDirectory)/frontend
     echo after path
-    npm install -g @angular/cli
-    echo after angular 
     npm install
     echo after npm
     ng version
