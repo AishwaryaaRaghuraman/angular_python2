@@ -32,32 +32,22 @@ steps:
   displayName: 'Install Node.js 18.x'
 
 - script: |
-    echo Installing for build
+    echo Starting the build
     cd frontend/
     npm install -g @angular/cli
     npm install
     ng version
-    ng build  
-  displayName: 'npm install and build'
-
-- script: |
-    echo Starting the build
-    cd frontend/
-    ng build  
+    ng build     
   displayName: 'Build with Angular'
 
+      
 - script: |
-    echo Install 
+    echo Starting the build
     cd backend/
- 
+    python --version
     python -m venv venv
     .\venv\Scripts\activate 
     pip install -r requirements.txt
-  displayName: 'installing '
-
-- script: |
-    echo Starting the build
-    cd backend/
     python app.py
   displayName: 'Build with Python'
 
