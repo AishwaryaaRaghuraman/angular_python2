@@ -35,7 +35,6 @@ steps:
     echo Starting the build
     echo $(Build.SourcesDirectory)
     cd $(Build.SourcesDirectory)/frontend
-   
     npm install -g @angular/cli
     npm install
     echo am here
@@ -46,7 +45,7 @@ steps:
       
 - script: |
     echo Starting the build
-    cd backend/
+    cd $(Build.SourcesDirectory)/backend
     python --version
     python -m venv venv
     .\venv\Scripts\activate 
