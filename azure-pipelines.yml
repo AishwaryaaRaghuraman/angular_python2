@@ -33,21 +33,29 @@ steps:
 
 - script: |
     echo Starting the build
-    cd  $(Build.SourcesDirectory)/frontend || exit 1
-    npm install -g @angular/cli || exit 1
-    npm install || exit 1
-    ng version || exit 1
-    ng build || exit 1  
+    cd  $(Build.SourcesDirectory)/frontend 
+    npm install 
+    ng version 
+    ng build 
   displayName: 'Build with Angular'
   workingDirectory: 'frontend'
 
 - script: |
     echo Starting the build
+    cd  $(Build.SourcesDirectory)/frontend 
+    ng build 
+  displayName: 'Build with Angular'
+  workingDirectory: 'frontend'
+- script: |
+    echo Starting the build
     cd $(Build.SourcesDirectory)/backend
-    python --version
-    python -m venv venv
-    .\venv\Scripts\activate 
     pip install -r requirements.txt
+  displayName: 'Build with Python'
+  workingDirectory: 'backend'
+
+- script: |
+    echo Starting the build
+    cd $(Build.SourcesDirectory)/backend
     python app.py
   displayName: 'Build with Python'
   workingDirectory: 'backend'
