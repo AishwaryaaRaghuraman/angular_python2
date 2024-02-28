@@ -58,7 +58,7 @@ steps:
 - script: |
     echo Starting the build
     cd backend/
-    python main.py
+    python app.py
   displayName: 'Build with Python'
 
 - script: |
