@@ -33,10 +33,10 @@ steps:
 
 - script: |
     echo Starting the build
-    cd frontend
-    ls
+    cd angular_python2/frontend
     npm install -g @angular/cli
     npm install
+    echo am here
     ng version
     ng build     
   displayName: 'Build with Angular'
