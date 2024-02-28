@@ -49,7 +49,7 @@ steps:
 - script: |
     echo Starting the build
     cd $(Build.SourcesDirectory)/backend
-    pip install -r requirements.txt
+    pip install -r requirement.txt
   displayName: 'Build with Python'
   workingDirectory: 'backend'
 
