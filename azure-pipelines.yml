@@ -33,20 +33,13 @@ steps:
 
 - script: |
     echo Starting the build
-    echo $(Build.SourcesDirectory)
-    cd $(Build.SourcesDirectory)/frontend
-    echo after path
-    npm install
- 
+    cd  $(Build.SourcesDirectory)/frontend || exit 1
+    npm install -g @angular/cli || exit 1
+    npm install || exit 1
+    ng version || exit 1
+    ng build || exit 1  
   displayName: 'Build with Angular'
   workingDirectory: 'frontend'
-  
-- script: |
-    echo  build
-    cd $(Build.SourcesDirectory)/frontend
-    ng build     
-  displayName: 'Build with Angular'
-  workingDirectory: 'frontend' 
 
 - script: |
     echo Starting the build
