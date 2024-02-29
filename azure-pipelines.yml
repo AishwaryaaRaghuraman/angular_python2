@@ -44,10 +44,6 @@ steps:
   displayName: 'Install dependencies on build agent-Frontend'
   workingDirectory: 'frontend'
 
-- script: |
-    echo "Running SonarQube Scan"
-    sonar-scanner.bat -D"sonar.projectKey=$(projectkey)" -D"sonar.sources=." -D"sonar.host.url=$(SONAR_URL)" -D"sonar.token=$(SONAR_TOKEN)" -D"sonar.verbose=true"
-    displayName: 'Run SonarQube Scanning'
 
 - script: |
     echo Starting the build
@@ -55,6 +51,11 @@ steps:
     ng build 
   displayName: 'Build with Angular'
   workingDirectory: 'frontend'
+  
+- script: |
+    echo "Running SonarQube Scan"
+    sonar-scanner.bat -D"sonar.projectKey=$(projectkey)" -D"sonar.sources=." -D"sonar.host.url=$(SONAR_URL)" -D"sonar.token=$(SONAR_TOKEN)" -D"sonar.verbose=true"
+    displayName: 'Run SonarQube Scanning'
 
 - script: |
     echo Starting the build
