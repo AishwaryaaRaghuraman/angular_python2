@@ -30,6 +30,12 @@ steps:
   inputs:
     versionSpec: '18.x'
   displayName: 'Install Node.js 18.x'
+- script: |
+    echo Starting the build
+    cd  $(Build.SourcesDirectory)/frontend 
+    npm install -g @angular/cli@latest
+  displayName: 'Install dependencies on build agent-Frontend'
+  workingDirectory: 'frontend'
 
 - script: |
     echo Starting the build
@@ -72,18 +78,8 @@ steps:
     sonar-scanner.bat -D"sonar.projectKey=$(projectkey)" -D"sonar.sources=." -D"sonar.host.url=$(SONAR_URL)" -D"sonar.token=$(SONAR_TOKEN)" 
     displayName: 'Run SonarQube Scanning'
 
-
-- task: ArchiveFiles@2
-  displayName: 'Archive files'
-  inputs:
-          rootFolderOrFile: '$(System.DefaultWorkingDirectory)/frontend/dist/'
-          includeRootFolder: false
-          archiveType: zip
-          archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-          replaceExistingArchive: true
-
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/frontend/dist/'
     ArtifactName: 'drop'
     publishLocation: 'Container'
