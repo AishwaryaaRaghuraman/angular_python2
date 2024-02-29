@@ -49,23 +49,22 @@ steps:
     echo Starting the build
     cd $(Build.SourcesDirectory)/backend
     python -m venv venv  
-    .\venv\Scripts\activate 
-  displayName: 'Build with Python'
-  workingDirectory: 'Install dependencies on build agent-Backend'
+  displayName: 'Install dependencies on build agent-Backend'
+  workingDirectory: 'backend'
 
 - script: |
     echo Starting the build
     cd $(Build.SourcesDirectory)/backend
     .\venv\Scripts\activate 
-  displayName: 'Build with Python'
-  workingDirectory: 'Install dependencies on build agent-Backend'
+  displayName: 'Install dependencies on build agent-Backend'
+  workingDirectory: 'backend'
 
 - script: |
     echo Starting the build
     cd $(Build.SourcesDirectory)/backend
     pip install -r requirement.txt
-  displayName: 'Build with Python'
-  workingDirectory: 'Install dependencies on build agent-Backend'
+  displayName: 'Install dependencies on build agent-Backend'
+  workingDirectory: 'backend'
 
   
 - script: |
