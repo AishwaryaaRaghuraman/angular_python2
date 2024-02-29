@@ -34,10 +34,8 @@ steps:
 - script: |
     echo Starting the build
     cd  $(Build.SourcesDirectory)/frontend 
-    npm install 
-    ng version 
-    ng build 
-  displayName: 'Build with Angular'
+    npm install
+  displayName: 'Install dependencies on build agent-Frontend'
   workingDirectory: 'frontend'
 
 - script: |
@@ -46,19 +44,28 @@ steps:
     ng build 
   displayName: 'Build with Angular'
   workingDirectory: 'frontend'
+
+- script: |
+    echo Starting the build
+    cd $(Build.SourcesDirectory)/backend
+    python -m venv venv  
+    .\venv\Scripts\activate 
+  displayName: 'Build with Python'
+  workingDirectory: 'Install dependencies on build agent-Backend'
+- script: |
+    echo Starting the build
+    cd $(Build.SourcesDirectory)/backend
+    .\venv\Scripts\activate 
+  displayName: 'Build with Python'
+  workingDirectory: 'Install dependencies on build agent-Backend'
+  
 - script: |
     echo Starting the build
     cd $(Build.SourcesDirectory)/backend
     pip install -r requirement.txt
   displayName: 'Build with Python'
-  workingDirectory: 'backend'
+  workingDirectory: 'Install dependencies on build agent-Backend'
 
-- script: |
-    echo Starting the build
-    cd $(Build.SourcesDirectory)/backend
-    python app.py
-  displayName: 'Build with Python'
-  workingDirectory: 'backend'
   
 - script: |
     echo "Running SonarQube Scan"
