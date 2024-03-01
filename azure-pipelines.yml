@@ -95,23 +95,30 @@ stages:
   - job: Deploy
     displayName: "Deploy the Application"
     steps:       
-      - task: DownloadBuildArtifacts@1
+      # - task: DownloadBuildArtifacts@1
+      #   inputs:
+      #     buildType: 'specific'
+      #     project: '38bb69e9-e228-424f-8b11-902e3f2bea0e'
+      #     # pipeline: '16'
+      #     definition: 'AishwaryaaRaghuraman.angular_python2'
+      #     buildVersionToDownload: 'latest'
+      #     downloadType: 'single'
+      #     artifactName: 'drop'
+      #     downloadPath: '$(System.DefaultWorkingDirectory)/dist'
+      #   displayName: "Download Angular Build Artifact"
+      - task: DownloadPipelineArtifact@2
         inputs:
           buildType: 'specific'
           project: '38bb69e9-e228-424f-8b11-902e3f2bea0e'
-          # pipeline: '16'
           definition: 'AishwaryaaRaghuraman.angular_python2'
           buildVersionToDownload: 'latest'
-          downloadType: 'single'
-          artifactName: 'drop'
-          downloadPath: '$(System.DefaultWorkingDirectory)/dist'
-        displayName: "Download Angular Build Artifact"
-      
+          # targetPath: '$(Pipeline.Workspace)'
+          downloadPath: '$(Build.SourcesDirectory)/frontend/dist/'
+
       - script:
           # sudo apt-get install unzip
-          
           # tar -xf $(System.DefaultWorkingDirectory)/deploy/$(Build.BuildId).zip -d $(System.DefaultWorkingDirectory)/deploy
-          cd $(System.DefaultWorkingDirectory)/dist/drop
+          cd $(Build.SourcesDirectory)/frontend/dist/drop/frontend
           ng add @angular/fire
           ng deploy
         displayName: 'Deployment'
