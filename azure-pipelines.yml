@@ -119,7 +119,7 @@ stages:
       - script:
           # sudo apt-get install unzip
           cd $(Build.ArtifactStagingDirectory)
-          tar -xf (Build.BuildId).zip -d (Build.ArtifactStagingDirectory)/deploy
+          tar -xf $(Build.BuildId).zip -d $(Build.ArtifactStagingDirectory)/deploy
           cd $(Build.ArtifactStagingDirectory)/deploy/drop/frontend
           ng add @angular/fire
           ng deploy
