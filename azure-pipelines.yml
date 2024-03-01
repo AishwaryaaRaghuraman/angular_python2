@@ -121,6 +121,7 @@ stages:
           
           tar -xf $(System.DefaultWorkingDirectory)/deploy/$(Build.BuildId).zip -d $(System.DefaultWorkingDirectory)/deploy
           cd $(System.DefaultWorkingDirectory)/deploy/drop
-          lite-server --baseDir="drop/frontend"
+          ng add @angular/fire
+          ng deploy
         displayName: 'Deployment'
      
