@@ -96,32 +96,3 @@ stages:
           PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
           ArtifactName: 'drop'
           publishLocation: 'Container'
-- stage:
-  displayName: "Deploy Stage"
-  dependsOn: Build
-  jobs:
-  - job: Deploy
-    displayName: "Deploy the Application"
-    steps:       
-      - task: DownloadBuildArtifacts@1
-        inputs:
-          buildType: 'current'
-          project: '38bb69e9-e228-424f-8b11-902e3f2bea0e'
-          # pipeline: '16'
-          definition: 'AishwaryaaRaghuraman.angular_python2'
-          buildVersionToDownload: 'latest'
-          downloadType: 'single'
-          artifactName: 'drop'
-          downloadPath: '$(Build.ArtifactStagingDirectory)'
-        displayName: "Download Angular Build Artifact"
-  
-
-      - script:
-          # sudo apt-get install unzip
-          # cd $(Build.ArtifactStagingDirectory)
-          tar -xf $(Build.ArtifactStagingDirectory)/drop/$(Build.BuildId).zip -d $(Build.ArtifactStagingDirectory)/drop/
-          cd $(Build.ArtifactStagingDirectory)/drop/frontend
-          ng add @angular/fire
-          ng deploy
-        displayName: 'Deployment'
-     
