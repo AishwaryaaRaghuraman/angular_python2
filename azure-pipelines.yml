@@ -16,80 +16,110 @@ trigger:
 
 pool: Default
 
+stages:
+- stage: Build
+  displayName: "Build Stage"
+  jobs:
+    - job: Build
+      displayName: "Build the Application"
+      steps:
+      - script: echo "Git Clone"
+        displayName: 'Git Clone'
+        env:
+          GIT_USERNAME: $(gitUsername)
+          REPO_NAME: $(repoName)
+          BRANCH_NAME: $(branchName)
+        continueOnError: false
 
-steps:
-- script: echo "Git Clone"
-  displayName: 'Git Clone'
-  env:
-    GIT_USERNAME: $(gitUsername)
-    REPO_NAME: $(repoName)
-    BRANCH_NAME: $(branchName)
-  continueOnError: false
+      - task: NodeTool@0
+        inputs:
+          versionSpec: '18.x'
+        displayName: 'Install Node.js 18.x'
+      - script: |
+          echo Starting the build
+          cd  $(Build.SourcesDirectory)/frontend 
+          npm install -g @angular/cli@latest
+        displayName: 'Install dependencies on build agent-Frontend'
+        workingDirectory: 'frontend'
 
-- task: NodeTool@0
-  inputs:
-    versionSpec: '18.x'
-  displayName: 'Install Node.js 18.x'
-- script: |
-    echo Starting the build
-    cd  $(Build.SourcesDirectory)/frontend 
-    npm install -g @angular/cli@latest
-  displayName: 'Install dependencies on build agent-Frontend'
-  workingDirectory: 'frontend'
-
-- script: |
-    echo Starting the build
-    cd  $(Build.SourcesDirectory)/frontend 
-    npm install
-  displayName: 'Install dependencies on build agent-Frontend'
-  workingDirectory: 'frontend'
+      - script: |
+          echo Starting the build
+          cd  $(Build.SourcesDirectory)/frontend 
+          npm install
+        displayName: 'Install dependencies on build agent-Frontend'
+        workingDirectory: 'frontend'
 
 
-- script: |
-    echo Starting the build
-    cd  $(Build.SourcesDirectory)/frontend 
-    ng build 
-  displayName: 'Build with Angular'
-  workingDirectory: 'frontend'
-  
-- script: |
-    echo "Running SonarQube Scan"
-    sonar-scanner.bat -D"sonar.projectKey=$(projectkey)" -D"sonar.sources=." -D"sonar.host.url=$(SONAR_URL)" -D"sonar.token=$(SONAR_TOKEN)" -D"sonar.verbose=true"
-    displayName: 'Run SonarQube Scanning'
+      - script: |
+          echo Starting the build
+          cd  $(Build.SourcesDirectory)/frontend 
+          ng build 
+        displayName: 'Build with Angular'
+        workingDirectory: 'frontend'
+        
+      - script: |
+          echo "Running SonarQube Scan"
+          sonar-scanner.bat -D"sonar.projectKey=$(projectkey)" -D"sonar.sources=." -D"sonar.host.url=$(SONAR_URL)" -D"sonar.token=$(SONAR_TOKEN)" -D"sonar.verbose=true"
+          displayName: 'Run SonarQube Scanning'
 
-- script: |
-    echo Starting the build
-    cd $(Build.SourcesDirectory)/backend
-    python -m venv venv  
-  displayName: 'Install dependencies on build agent-Backend'
-  workingDirectory: 'backend'
+      - script: |
+          echo Starting the build
+          cd $(Build.SourcesDirectory)/backend
+          python -m venv venv  
+        displayName: 'Install dependencies on build agent-Backend'
+        workingDirectory: 'backend'
 
-- script: |
-    echo Starting the build
-    cd $(Build.SourcesDirectory)/backend
-    .\venv\Scripts\activate 
-  displayName: 'Install dependencies on build agent-Backend'
-  workingDirectory: 'backend'
+      - script: |
+          echo Starting the build
+          cd $(Build.SourcesDirectory)/backend
+          .\venv\Scripts\activate 
+        displayName: 'Install dependencies on build agent-Backend'
+        workingDirectory: 'backend'
 
-- script: |
-    echo Starting the build
-    cd $(Build.SourcesDirectory)/backend
-    pip install -r requirement.txt
-  displayName: 'Install dependencies on build agent-Backend'
-  workingDirectory: 'backend'
+      - script: |
+          echo Starting the build
+          cd $(Build.SourcesDirectory)/backend
+          pip install -r requirement.txt
+        displayName: 'Install dependencies on build agent-Backend'
+        workingDirectory: 'backend'
 
-- task: ArchiveFiles@2
-  displayName: 'Archive files'
-  inputs:
-          rootFolderOrFile: '$(System.DefaultWorkingDirectory)/frontend/dist/'
-          includeRootFolder: false
-          archiveType: zip
-          archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-          replaceExistingArchive: true
+      - task: ArchiveFiles@2
+        displayName: 'Archive files'
+        inputs:
+                rootFolderOrFile: '$(System.DefaultWorkingDirectory)/frontend/dist/'
+                includeRootFolder: false
+                archiveType: zip
+                archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+                replaceExistingArchive: true
 
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
-    
+      - task: PublishBuildArtifacts@1
+        inputs:
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+          ArtifactName: 'drop'
+          publishLocation: 'Container'
+- stage:
+  displayName: "Deploy Stage"
+  dependsOn: Build
+  jobs:
+  - job: Deploy
+    displayName: "Deploy the Application"
+    steps:       
+      - task: DownloadBuildArtifacts@1
+        inputs:
+          buildType: 'specific'
+          project: '38bb69e9-e228-424f-8b11-902e3f2bea0e'
+          # pipeline: '16'
+          definition: 'AishwaryaaRaghuraman.angular_python2'
+          buildVersionToDownload: 'latest'
+          downloadType: 'single'
+          artifactName: 'drop'
+          downloadPath: '$(System.DefaultWorkingDirectory)/deploy'
+        displayName: "Download Angular Build Artifact"
+      
+      - script:
+          sudo apt-get install unzip
+          unzip $(System.DefaultWorkingDirectory)/deploy/$(Build.BuildId).zip -d $(System.DefaultWorkingDirectory)/deploy
+          cd $(System.DefaultWorkingDirectory)/deploy/dist
+          ng serve --port 80 --host 0.0.0.0 --disable-host-check
+        displayName: 'Deployment'
+        
