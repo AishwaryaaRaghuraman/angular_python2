@@ -110,8 +110,8 @@ stages:
       - script:
           # sudo apt-get install unzip
           
-          tar -xf $(System.DefaultWorkingDirectory)/deploy/$(Build.BuildId).zip -d $(System.DefaultWorkingDirectory)/deploy
-          cd $(System.DefaultWorkingDirectory)/deploy/drop
+          # tar -xf $(System.DefaultWorkingDirectory)/deploy/$(Build.BuildId).zip -d $(System.DefaultWorkingDirectory)/deploy
+          cd $(System.DefaultWorkingDirectory)/dist/drop
           ng add @angular/fire
           ng deploy
         displayName: 'Deployment'
