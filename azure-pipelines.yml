@@ -118,8 +118,8 @@ stages:
       
       - script:
           # sudo apt-get install unzip
-          cd $(System.DefaultWorkingDirectory)/deploy/$(Build.ArtifactStagingDirectory)
-          tar -xf $(Build.BuildId).zip -d $(System.DefaultWorkingDirectory)/deploy
+          
+          tar -xf $(System.DefaultWorkingDirectory)/deploy/$(Build.BuildId).zip -d $(System.DefaultWorkingDirectory)/deploy
           cd $(System.DefaultWorkingDirectory)/deploy/drop
           lite-server --baseDir="drop/frontend"
         displayName: 'Deployment'
