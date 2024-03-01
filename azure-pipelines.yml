@@ -116,10 +116,15 @@ stages:
           downloadPath: '$(System.DefaultWorkingDirectory)/deploy'
         displayName: "Download Angular Build Artifact"
       
+      # - script:
+      #     # sudo apt-get install unzip
+      #     cd $(System.DefaultWorkingDirectory)/deploy/$(Build.ArtifactStagingDirectory)
+      #     tar -xf $(Build.BuildId).zip
+      #     cd /frontend
+      #     ng serve --port 80 --host 0.0.0.0 --disable-host-check
+      #   displayName: 'Deployment'
       - script:
-          # sudo apt-get install unzip
-          tar -xf $(System.DefaultWorkingDirectory)/deploy/$(Build.BuildId).zip -d $(System.DefaultWorkingDirectory)/deploy
-          cd $(System.DefaultWorkingDirectory)/deploy/dist
-          ng serve --port 80 --host 0.0.0.0 --disable-host-check
+          npm install -g http-server
+          cd $(System.DefaultWorkingDirectory)/deploy/$(Build.ArtifactStagingDirectory)/frondend
+          http-server -p 8080
         displayName: 'Deployment'
-        
