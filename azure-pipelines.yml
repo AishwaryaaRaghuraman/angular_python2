@@ -6,7 +6,7 @@ parameters:
   default: AishwaryaaRaghuraman
 - name: repoName
   type: string
-  default: angular_python
+  default: angular_python2
 - name: branchName
   type: string
   default: main
@@ -117,8 +117,8 @@ stages:
         displayName: "Download Angular Build Artifact"
       
       - script:
-          sudo apt-get install unzip
-          unzip $(System.DefaultWorkingDirectory)/deploy/$(Build.BuildId).zip -d $(System.DefaultWorkingDirectory)/deploy
+          # sudo apt-get install unzip
+          tar -xf $(System.DefaultWorkingDirectory)/deploy/$(Build.BuildId).zip -d $(System.DefaultWorkingDirectory)/deploy
           cd $(System.DefaultWorkingDirectory)/deploy/dist
           ng serve --port 80 --host 0.0.0.0 --disable-host-check
         displayName: 'Deployment'
