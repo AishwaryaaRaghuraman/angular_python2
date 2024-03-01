@@ -104,7 +104,7 @@ stages:
           buildVersionToDownload: 'latest'
           downloadType: 'single'
           artifactName: 'drop'
-          downloadPath: '$(System.DefaultWorkingDirectory)/deploy'
+          downloadPath: '$(System.DefaultWorkingDirectory)/dist'
         displayName: "Download Angular Build Artifact"
       
       - script:
