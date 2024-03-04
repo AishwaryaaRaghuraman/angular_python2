@@ -53,7 +53,7 @@ stages:
       - script: |
           echo Starting the build
           cd  $(Build.SourcesDirectory)/frontend 
-          ng build 
+          ng build --prod
         displayName: 'Build with Angular'
         workingDirectory: 'frontend'
         
@@ -85,7 +85,7 @@ stages:
       - task: ArchiveFiles@2
         displayName: 'Archive files'
         inputs:
-                rootFolderOrFile: '$(System.DefaultWorkingDirectory)/frontend/dist/'
+                rootFolderOrFile: '$(System.DefaultWorkingDirectory)/frontend/dist/frontend'
                 includeRootFolder: false
                 archiveType: zip
                 archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
