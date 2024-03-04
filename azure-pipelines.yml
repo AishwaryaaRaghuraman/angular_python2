@@ -53,7 +53,7 @@ stages:
       - script: |
           echo Starting the build
           cd  $(Build.SourcesDirectory)/frontend 
-          ng build --prod
+          ng build --configuration production
         displayName: 'Build with Angular'
         workingDirectory: 'frontend'
         
