@@ -82,17 +82,23 @@ stages:
           pip install -r requirement.txt
         displayName: 'Install dependencies on build agent-Backend'
         workingDirectory: 'backend'
-      - task: ArchiveFiles@2
-        displayName: 'Archive files'
-        inputs:
-                rootFolderOrFile: '$(System.DefaultWorkingDirectory)/frontend/dist/frontend'
-                includeRootFolder: false
-                archiveType: zip
-                archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-                replaceExistingArchive: true
+      # - task: ArchiveFiles@2
+      #   displayName: 'Archive files'
+      #   inputs:
+      #           rootFolderOrFile: '$(System.DefaultWorkingDirectory)/frontend/dist/frontend'
+      #           includeRootFolder: false
+      #           archiveType: zip
+      #           archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+      #           replaceExistingArchive: true
+
+      # - task: PublishBuildArtifacts@1
+      #   inputs:
+      #     PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+      #     ArtifactName: 'drop'
+      #     publishLocation: 'Container'
 
       - task: PublishBuildArtifacts@1
         inputs:
-          PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+          PathtoPublish: '$(Build.SourcesDirectory)/frontend/dist/'
           ArtifactName: 'drop'
           publishLocation: 'Container'
